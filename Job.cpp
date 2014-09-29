@@ -87,6 +87,14 @@ unsigned long Job::getId() const
 unsigned long Job::getDeadline()
 {
     unsigned long moment = 0;
+    if (positionCounter > 0)
+    {
+	if (positionCounter < unscheduledTasks.size())
+	{
+	    moment = unscheduledTasks.at(positionCounter).getDuration()
+		    + unscheduledTasks.at(positionCounter).getScheduleTime();
+	}
+    }
 
     for (unsigned long i = positionCounter; i < unscheduledTasks.size(); i++)
     {
@@ -126,33 +134,33 @@ unsigned long Job::getNextTaskMachineN() const
 
 void Job::schedule()
 {
-	//std::sort(unscheduledTasks.begin(), unscheduledTasks.end());
-	if (hasUnscheduledTasks())
+    //std::sort(unscheduledTasks.begin(), unscheduledTasks.end());
+    if (hasUnscheduledTasks())
+    {
+	std::cout << "----------------------" << std::endl;
+	Task& t = unscheduledTasks.at(positionCounter);
+	unsigned long moment = 0;
+	for (unsigned long i = 0; i < positionCounter; i++)
 	{
-	    std::cout << "----------------------" << std::endl;
-	    Task& t = unscheduledTasks.at(positionCounter);
-	    unsigned long moment = 0;
-	    for (unsigned long i = 0; i < positionCounter; i++)
-	    {
-		std::cout << unscheduledTasks.at(i).getDuration() << " " << unscheduledTasks.at(i).getScheduleTime() << std::endl;
-		moment = (unscheduledTasks.at(i).getDuration()
-			+ unscheduledTasks.at(i).getScheduleTime());
-	    }
-	    t.setScheduleTime(moment);
-	    std::cout << "original scheduletime: " << t.getScheduleTime() << std::endl;
-	    // t.schedule();
-	    if (shop == nullptr) {
-		std::cout << "It's a nullptr \n";
-	    } else {
-		shop->getMachineAt(t.getMachineN())->addTask(t);
-	    }
-
-	    //scheduledTasks.push_back(t);
-	    std::cout << "Scheduled task: " << ID << "." << t.getId() << " at time: "
-		    << t.getScheduleTime() << " duration:" << t.getDuration() << " machineN:"
-		    << t.getMachineN() << std::endl;
-	    positionCounter++;
-	    //unscheduledTasks.erase(unscheduledTasks.begin());
+	    moment = (unscheduledTasks.at(i).getDuration()
+		    + unscheduledTasks.at(i).getScheduleTime());
 	}
+	t.setScheduleTime(moment);
+	// t.schedule();
+	if (shop == nullptr)
+	{
+	}
+	else
+	{
+	    shop->getMachineAt(t.getMachineN())->addTask(t);
+	}
+
+	//scheduledTasks.push_back(t);
+	std::cout << "Scheduled task: " << ID << "." << t.getId() << " at time: "
+		<< t.getScheduleTime() << " duration:" << t.getDuration() << " machineN:"
+		<< t.getMachineN() << " Deadline of " << getDeadline()<< std::endl;
+	positionCounter++;
+	//unscheduledTasks.erase(unscheduledTasks.begin());
+    }
 
 }

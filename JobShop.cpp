@@ -64,7 +64,7 @@ Job* JobShop::getLeastSlackJob()
     Job* latestJob = nullptr;
     for (Job& j : jobs)
     {
-	if (latestdeadline <= j.getDeadline())
+	if (latestdeadline < j.getDeadline())
 	{
 	    latestdeadline = j.getDeadline();
 	    latestJob = &j;

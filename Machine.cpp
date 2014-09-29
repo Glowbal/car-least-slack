@@ -56,12 +56,8 @@ void Machine::addTask(Task& t)
 	if (taskTime < lastcompleted)
 	{
 	    time = lastcompleted;
-	    while (!isFree(time))
-		time++;
 	}
 	t.setScheduleTime(time);
-
-	std::cout << "Adjusted scheduleTime: " << t.getScheduleTime() << std::endl;
     }
     scheduledTasks.push_back(t);
 }
