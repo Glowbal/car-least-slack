@@ -34,6 +34,9 @@ class Task
 	unsigned long machineN;
 	unsigned short duration;
 	unsigned long scheduleTime;
+	unsigned long earliestTime;
+	unsigned long latestTime;
+
 };
 
 #endif /* TASK_HPP_ */

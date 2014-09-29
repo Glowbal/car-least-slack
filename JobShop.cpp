@@ -37,7 +37,6 @@ JobShop::JobShop(const std::string& jobFileName) :
 	    iss >> numberOfJobs >> numberOfMachines;
 	    for (unsigned long i = 0; i < numberOfMachines; i++)
 	    {
-		std::cout << "New machine: " << i << std::endl;
 		machines.push_back(Machine(i));
 	    }
 	}
@@ -61,12 +60,11 @@ JobShop::JobShop(const std::string& jobFileName) :
 
 Job* JobShop::getLeastSlackJob()
 {
-    // std::sort(jobs.begin(), jobs.end());
     unsigned long latestdeadline = 0;
     Job* latestJob = nullptr;
     for (Job& j : jobs)
     {
-	if (latestdeadline < j.getDeadline())
+	if (latestdeadline <= j.getDeadline())
 	{
 	    latestdeadline = j.getDeadline();
 	    latestJob = &j;
@@ -93,17 +91,15 @@ Job* JobShop::getLeastSlackJob()
  */
 void JobShop::schedule()
 {
-    int counter = 0;
-    while (hasUnscheduledTasks() && counter < 10)
+
+    while (hasUnscheduledTasks())
     {
 	// std::sort(jobs.begin(), jobs.end());
 	Job* latestJob = getLeastSlackJob();
 	if (latestJob != nullptr)
 	{
-	    std::cout << "Schedule job" << std::endl;
 	    latestJob->schedule();
 	}
-	counter++;
     }
 
 }

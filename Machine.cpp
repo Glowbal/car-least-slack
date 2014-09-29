@@ -46,8 +46,21 @@ bool Machine::operator<(const Machine& base) const
 
 void Machine::addTask(Task& t)
 {
-   if (!isFree(t.getScheduleTime())) {
-	t.setScheduleTime(scheduledTasks.back().getScheduleTime() + scheduledTasks.back().getDuration());
+
+    if (!scheduledTasks.empty())
+    {
+	unsigned long taskTime = t.getScheduleTime();
+	unsigned long lastcompleted = scheduledTasks.back().getScheduleTime()
+		+ scheduledTasks.back().getDuration();
+	unsigned long time = taskTime;
+	if (taskTime < lastcompleted)
+	{
+	    time = lastcompleted;
+	    while (!isFree(time))
+		time++;
+	}
+	t.setScheduleTime(time);
+
 	std::cout << "Adjusted scheduleTime: " << t.getScheduleTime() << std::endl;
     }
     scheduledTasks.push_back(t);
@@ -55,10 +68,14 @@ void Machine::addTask(Task& t)
 
 bool Machine::isFree(unsigned long time) const
 {
-    if (scheduledTasks.empty()) {
+    if (scheduledTasks.empty())
+    {
 	return true;
-    } else {
-	return ((scheduledTasks.back().getScheduleTime() + scheduledTasks.back().getDuration()) < time);
+    }
+    else
+    {
+	return ((scheduledTasks.back().getScheduleTime() + scheduledTasks.back().getDuration())
+		<= time);
     }
     return false;
 

@@ -129,16 +129,18 @@ void Job::schedule()
 	//std::sort(unscheduledTasks.begin(), unscheduledTasks.end());
 	if (hasUnscheduledTasks())
 	{
-	    Task t = unscheduledTasks.at(positionCounter);
+	    std::cout << "----------------------" << std::endl;
+	    Task& t = unscheduledTasks.at(positionCounter);
 	    unsigned long moment = 0;
 	    for (unsigned long i = 0; i < positionCounter; i++)
 	    {
-		moment += (unscheduledTasks.at(i).getDuration()
+		std::cout << unscheduledTasks.at(i).getDuration() << " " << unscheduledTasks.at(i).getScheduleTime() << std::endl;
+		moment = (unscheduledTasks.at(i).getDuration()
 			+ unscheduledTasks.at(i).getScheduleTime());
 	    }
 	    t.setScheduleTime(moment);
+	    std::cout << "original scheduletime: " << t.getScheduleTime() << std::endl;
 	    // t.schedule();
-	    std::cout << "getMachineAt: " << t.getMachineN() << std::endl;
 	    if (shop == nullptr) {
 		std::cout << "It's a nullptr \n";
 	    } else {
