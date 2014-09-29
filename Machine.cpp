@@ -74,5 +74,14 @@ bool Machine::isFree(unsigned long time) const
 		<= time);
     }
     return false;
+}
 
+unsigned long Machine::getFreeMoment() const
+{
+    unsigned long moment = 0;
+    if (!scheduledTasks.empty())
+    {
+	moment = scheduledTasks.back().getScheduleTime() + scheduledTasks.back().getDuration();
+    }
+    return moment;
 }

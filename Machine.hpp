@@ -22,7 +22,7 @@ class Machine
 	unsigned long getID() const;
 	void addTask(Task& t);
 	bool isFree(unsigned long time) const;
-
+	unsigned long getFreeMoment() const;
     private:
 	unsigned long ID;
 	unsigned long time;

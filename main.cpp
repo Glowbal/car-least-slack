@@ -10,7 +10,7 @@
 
 int main(int argc, char **argv)
 {
-    JobShop shop("test.txt");
+    JobShop shop("test2");
      shop.schedule();
      shop.printSchedule();
     return 0;

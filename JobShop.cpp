@@ -64,10 +64,15 @@ Job* JobShop::getLeastSlackJob()
     Job* latestJob = nullptr;
     for (Job& j : jobs)
     {
-	if (latestdeadline < j.getDeadline())
+	if (j.hasUnscheduledTasks())
 	{
-	    latestdeadline = j.getDeadline();
-	    latestJob = &j;
+	    unsigned long d = j.getDeadline();
+	    std::cout << "DEADLINE: " << j.getId() << " " << d << std::endl;
+	    if (latestdeadline < d)
+	    {
+		latestdeadline = d;
+		latestJob = &j;
+	    }
 	}
     }
     return latestJob;
@@ -100,6 +105,10 @@ void JobShop::schedule()
 	{
 	    latestJob->schedule();
 	}
+	else
+	{
+	    std::cout << "latestJob == nullptr \n";
+	}
     }
 
 }
@@ -123,7 +132,8 @@ bool JobShop::machineFree(unsigned long machineNumber) const
 
 Machine* JobShop::getMachineAt(unsigned long n)
 {
-    if (n > machines.size()) {
+    if (n > machines.size())
+    {
 	return &machines.at(0);
     }
     return &machines.at(n);
@@ -137,8 +147,8 @@ void JobShop::printSchedule()
     for (const Job& j : jobs)
     {
 	std::cout << c << " " << j.unscheduledTasks.at(0).getScheduleTime() << " "
-		<< j.unscheduledTasks.back().getScheduleTime() + j.unscheduledTasks.back().getDuration()
-		<< std::endl;
+		<< j.unscheduledTasks.back().getScheduleTime()
+			+ j.unscheduledTasks.back().getDuration() << std::endl;
 	c++;
     }
 }
