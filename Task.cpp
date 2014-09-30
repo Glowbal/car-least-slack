@@ -24,7 +24,6 @@ Task::Task(const Task& t) :
 	id(t.id), machineN(t.machineN), duration(t.duration), scheduleTime(t.scheduleTime), earliestTime(
 		t.earliestTime), latestTime(t.duration)
 {
-  //  std::cout << "Made copy of task" << std::endl;
 }
 
 Task& Task::operator=(const Task& base)

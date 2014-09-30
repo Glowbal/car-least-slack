@@ -12,13 +12,10 @@
 Machine::Machine(unsigned long id) :
 	ID(id), time(0)
 {
-    // TODO Auto-generated constructor stub
-
 }
 
 Machine::~Machine()
 {
-    // TODO Auto-generated destructor stub
 }
 
 unsigned long Machine::getID() const
@@ -48,11 +45,10 @@ void Machine::addTask(Task& t)
 {
     if (!scheduledTasks.empty())
     {
-	unsigned long taskTime = t.getScheduleTime();
-	if (!isFree(taskTime)) {
-	    taskTime = getFreeMoment();
+	if (!isFree(t.getScheduleTime()))
+	{
+	    t.setScheduleTime(getFreeMoment());
 	}
-	t.setScheduleTime(taskTime);
     }
     scheduledTasks.push_back(t);
 }
@@ -63,20 +59,14 @@ bool Machine::isFree(unsigned long time) const
     {
 	return true;
     }
-    else
-    {
-	return ((scheduledTasks.back().getScheduleTime() + scheduledTasks.back().getDuration())
-		<= time);
-    }
-    return false;
+    return ((scheduledTasks.back().getScheduleTime() + scheduledTasks.back().getDuration()) <= time);
 }
 
 unsigned long Machine::getFreeMoment() const
 {
-    unsigned long moment = 0;
     if (!scheduledTasks.empty())
     {
-	moment = scheduledTasks.back().getScheduleTime() + scheduledTasks.back().getDuration();
+	return scheduledTasks.back().getScheduleTime() + scheduledTasks.back().getDuration();
     }
-    return moment;
+    return 0;
 }

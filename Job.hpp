@@ -25,18 +25,17 @@ class Job
 	bool operator<(const Job& base) const;
 
 	unsigned long getId() const;
-	std::vector<Task> unscheduledTasks;
+	std::vector<Task> taskList;
 	std::vector<Task> scheduledTasks;
-	unsigned long getDeadline();
+	unsigned long getDeadline() const;
 	bool hasUnscheduledTasks() const;
 	bool isScheduledOnMachine(unsigned short num, unsigned long currentTime) const;
 	unsigned long getNextTaskMachineN() const;
 	void schedule();
+	void addTask(unsigned long machineNumber, unsigned long time);
 
     private:
 	unsigned long ID;
-	unsigned long latestTaskID;
-
 	JobShop* shop;
 	unsigned long positionCounter;
 };

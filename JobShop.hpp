@@ -31,9 +31,6 @@ class JobShop
 
 	 Job* getLeastSlackJob();
 	 bool hasUnscheduledTasks();
-	 bool machineFree(unsigned long machineNumber) const;
-
-
 };
 
 #endif /* JOBSHOP_HPP_ */

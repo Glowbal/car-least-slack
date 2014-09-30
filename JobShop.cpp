@@ -106,11 +106,6 @@ bool JobShop::hasUnscheduledTasks()
     return false;
 }
 
-bool JobShop::machineFree(unsigned long machineNumber) const
-{
-    return machines.at(machineNumber).isFree(currentTime);
-}
-
 Machine* JobShop::getMachineAt(unsigned long n)
 {
     if (n > machines.size())
@@ -127,9 +122,9 @@ void JobShop::printSchedule()
     unsigned long c = 0;
     for (const Job& j : jobs)
     {
-	std::cout << c << " " << j.unscheduledTasks.at(0).getScheduleTime() << " "
-		<< j.unscheduledTasks.back().getScheduleTime()
-			+ j.unscheduledTasks.back().getDuration() << std::endl;
+	std::cout << c << " " << j.taskList.at(0).getScheduleTime() << " "
+		<< j.taskList.back().getScheduleTime()
+			+ j.taskList.back().getDuration() << std::endl;
 	c++;
     }
 }
