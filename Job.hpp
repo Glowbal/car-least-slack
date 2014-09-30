@@ -25,8 +25,7 @@ class Job
 	bool operator<(const Job& base) const;
 
 	unsigned long getId() const;
-	std::vector<Task> taskList;
-	std::vector<Task> scheduledTasks;
+	std::vector<TaskPtr> taskList;
 	unsigned long getDeadline() const;
 	bool hasUnscheduledTasks() const;
 	bool isScheduledOnMachine(unsigned short num, unsigned long currentTime) const;
