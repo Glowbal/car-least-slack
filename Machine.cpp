@@ -46,18 +46,13 @@ bool Machine::operator<(const Machine& base) const
 
 void Machine::addTask(Task& t)
 {
-
     if (!scheduledTasks.empty())
     {
 	unsigned long taskTime = t.getScheduleTime();
-	unsigned long lastcompleted = scheduledTasks.back().getScheduleTime()
-		+ scheduledTasks.back().getDuration();
-	unsigned long time = taskTime;
-	if (taskTime < lastcompleted)
-	{
-	    time = lastcompleted;
+	if (!isFree(taskTime)) {
+	    taskTime = getFreeMoment();
 	}
-	t.setScheduleTime(time);
+	t.setScheduleTime(taskTime);
     }
     scheduledTasks.push_back(t);
 }

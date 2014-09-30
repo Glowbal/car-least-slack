@@ -67,7 +67,6 @@ Job* JobShop::getLeastSlackJob()
 	if (j.hasUnscheduledTasks())
 	{
 	    unsigned long d = j.getDeadline();
-	    std::cout << "DEADLINE: " << j.getId() << " " << d << std::endl;
 	    if (latestdeadline < d)
 	    {
 		latestdeadline = d;
@@ -78,28 +77,10 @@ Job* JobShop::getLeastSlackJob()
     return latestJob;
 }
 
-/*
- 1) bereken leastSlack
- 2) pak eerste taak van job met leastslack. Kijk of machineN vrij is.
- JA:	Voeg tot aan schedule lijst met: start time (currentTime)
-
- NEE: Pak eenna least slack, repeat.
-
- 3) voor elke vrije machine:
- kijk of eerste taak van een job op die machine hoort.
- JA: voeg tot aan schedule lijst met: start time (currentTime)
-
- NEE: niks
-
- terug naar 1).
- *
- */
 void JobShop::schedule()
 {
-
     while (hasUnscheduledTasks())
     {
-	// std::sort(jobs.begin(), jobs.end());
 	Job* latestJob = getLeastSlackJob();
 	if (latestJob != nullptr)
 	{
@@ -142,7 +123,7 @@ Machine* JobShop::getMachineAt(unsigned long n)
 void JobShop::printSchedule()
 {
     std::cout << "---------------" << std::endl;
-    std::cout << "Schedule:\n";
+
     unsigned long c = 0;
     for (const Job& j : jobs)
     {

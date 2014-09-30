@@ -14,13 +14,11 @@
 Job::Job() :
 	ID(0), latestTaskID(0), shop(nullptr), positionCounter(0)
 {
-    // TODO Auto-generated constructor stub
 
 }
 
 Job::~Job()
 {
-    // TODO Auto-generated destructor stub
 }
 
 Job::Job(unsigned long id, const std::string& jobLine, JobShop* baseShop) :
@@ -38,12 +36,9 @@ Job::Job(unsigned long id, const std::string& jobLine, JobShop* baseShop) :
 	for (; iter != end; ++iter)
 	{
 	    std::istringstream iss(*iter);
-
 	    iss >> machineNumber >> time;
-// shop->getMachineAt(machineNumber)
 	    Task newTask(latestTaskID, machineNumber, time);
 	    ++latestTaskID;
-
 	    unscheduledTasks.push_back(newTask);
 	    std::cout << machineNumber << " - " << time << " | ";
 	}
@@ -87,27 +82,28 @@ unsigned long Job::getId() const
 unsigned long Job::getDeadline()
 {
     unsigned long moment = 0;
-
     if (positionCounter > 0)
     {
-	moment = (unscheduledTasks.at(positionCounter - 1).getDuration()
-		+ unscheduledTasks.at(positionCounter - 1).getScheduleTime());
+	moment += unscheduledTasks.at(positionCounter - 1).getDuration();
+	moment += unscheduledTasks.at(positionCounter - 1).getScheduleTime();
     }
-
     for (unsigned long i = positionCounter; i < unscheduledTasks.size(); ++i)
     {
-	if (shop->getMachineAt(i)->isFree(moment))
+	unsigned long machineN = unscheduledTasks.at(i).getMachineN();
+	if (shop->getMachineAt(machineN)->isFree(moment))
 	{
 	    if (unscheduledTasks.at(i).getScheduleTime() > 0)
 	    {
-		std::cout << "RESET MOMENT \n";
 		moment = unscheduledTasks.at(i).getScheduleTime();
 	    }
 	    moment += unscheduledTasks.at(i).getDuration();
 	}
 	else
 	{
-	    moment = shop->getMachineAt(i)->getFreeMoment();
+	    if (shop->getMachineAt(machineN)->getFreeMoment() > moment)
+	    {
+		moment = shop->getMachineAt(machineN)->getFreeMoment();
+	    }
 	    moment += unscheduledTasks.at(i).getDuration();
 	}
     }
@@ -150,13 +146,10 @@ void Job::schedule()
 		    << t.getMachineN() << " Deadline of " << getDeadline() << std::endl;
 	    positionCounter++;
 	}
-	else
-	{
-	    std::cout << "NO SCHEDULED\n";
-	}
     }
     catch (std::exception& e)
     {
 	std::cout << e.what() << std::endl;
+	throw e;
     }
 }
