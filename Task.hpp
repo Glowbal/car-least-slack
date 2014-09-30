@@ -7,8 +7,9 @@
 
 #ifndef TASK_HPP_
 #define TASK_HPP_
-
+#include <memory>
 #include "Machine.hpp"
+typedef std::shared_ptr<Task> TaskPtr;
 
 class Task
 {
@@ -26,7 +27,7 @@ class Task
 	unsigned long getId() const;
 	unsigned long getMachineN() const;
 	unsigned long getScheduleTime() const;
-	void setScheduleTime(unsigned long scheduleTime);
+	void setScheduleTime(unsigned long setTime);
 	void schedule();
 
     private:
@@ -34,8 +35,6 @@ class Task
 	unsigned long machineN;
 	unsigned short duration;
 	unsigned long scheduleTime;
-	unsigned long earliestTime;
-	unsigned long latestTime;
 
 };
 

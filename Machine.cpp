@@ -41,13 +41,13 @@ bool Machine::operator<(const Machine& base) const
     return ID < base.ID;
 }
 
-void Machine::addTask(Task& t)
+void Machine::addTask(TaskPtr t)
 {
     if (!scheduledTasks.empty())
     {
-	if (!isFree(t.getScheduleTime()))
+	if (!isFree(t->getScheduleTime()))
 	{
-	    t.setScheduleTime(getFreeMoment());
+	    t->setScheduleTime(getFreeMoment());
 	}
     }
     scheduledTasks.push_back(t);
@@ -59,14 +59,14 @@ bool Machine::isFree(unsigned long time) const
     {
 	return true;
     }
-    return ((scheduledTasks.back().getScheduleTime() + scheduledTasks.back().getDuration()) <= time);
+    return ((scheduledTasks.back()->getScheduleTime() + scheduledTasks.back()->getDuration()) <= time);
 }
 
 unsigned long Machine::getFreeMoment() const
 {
     if (!scheduledTasks.empty())
     {
-	return scheduledTasks.back().getScheduleTime() + scheduledTasks.back().getDuration();
+	return scheduledTasks.back()->getScheduleTime() + scheduledTasks.back()->getDuration();
     }
     return 0;
 }

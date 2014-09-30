@@ -122,9 +122,9 @@ void JobShop::printSchedule()
     unsigned long c = 0;
     for (const Job& j : jobs)
     {
-	std::cout << c << " " << j.taskList.at(0).getScheduleTime() << " "
-		<< j.taskList.back().getScheduleTime()
-			+ j.taskList.back().getDuration() << std::endl;
+	std::cout << c << " " << j.taskList.at(0)->getScheduleTime() << " "
+		<< j.taskList.back()->getScheduleTime()
+			+ j.taskList.back()->getDuration() << std::endl;
 	c++;
     }
 }

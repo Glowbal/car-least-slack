@@ -8,7 +8,10 @@
 #ifndef MACHINE_HPP_
 #define MACHINE_HPP_
 #include <vector>
+#include <memory>
 class Task;
+typedef std::shared_ptr<Task> TaskPtr;
+
 class Machine
 {
     public:
@@ -20,14 +23,14 @@ class Machine
 	bool operator<(const Machine& base) const;
 
 	unsigned long getID() const;
-	void addTask(Task& t);
+	void addTask(TaskPtr t);
 	bool isFree(unsigned long time) const;
 	unsigned long getFreeMoment() const;
     private:
 	unsigned long ID;
 	unsigned long time;
 
-	std::vector<Task> scheduledTasks;
+	std::vector<TaskPtr> scheduledTasks;
 };
 
 #endif /* MACHINE_HPP_ */

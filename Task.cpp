@@ -15,14 +15,12 @@ Task::~Task()
 }
 
 Task::Task(unsigned long theId, unsigned long machineNumber, unsigned short timeTask) :
-	id(theId), machineN(machineNumber), duration(timeTask), scheduleTime(0), earliestTime(0), latestTime(
-		timeTask)
+	id(theId), machineN(machineNumber), duration(timeTask), scheduleTime(0)
 {
     std::cout << "Machine number: " << machineN << " duration: " << duration << std::endl;
 }
 Task::Task(const Task& t) :
-	id(t.id), machineN(t.machineN), duration(t.duration), scheduleTime(t.scheduleTime), earliestTime(
-		t.earliestTime), latestTime(t.duration)
+	id(t.id), machineN(t.machineN), duration(t.duration), scheduleTime(t.scheduleTime)
 {
 }
 
@@ -34,8 +32,6 @@ Task& Task::operator=(const Task& base)
 	machineN = base.machineN;
 	duration = base.duration;
 	scheduleTime = base.scheduleTime;
-	earliestTime = base.earliestTime;
-	latestTime = base.latestTime;
     }
     return *this;
 }
@@ -70,9 +66,9 @@ unsigned long Task::getScheduleTime() const
     return scheduleTime;
 }
 
-void Task::setScheduleTime(unsigned long scheduleTime)
+void Task::setScheduleTime(unsigned long setTime)
 {
-    this->scheduleTime = scheduleTime;
+    scheduleTime = setTime;
 }
 
 void Task::schedule()

@@ -22,7 +22,7 @@ Job::~Job()
 
 void Job::addTask(unsigned long machineNumber, unsigned long time)
 {
-    taskList.push_back(Task(taskList.size(), machineNumber, time));
+    taskList.push_back(TaskPtr(new Task(taskList.size(), machineNumber, time)));
 }
 
 Job::Job(unsigned long id, const std::string& jobLine, JobShop* baseShop) :
@@ -58,7 +58,6 @@ Job& Job::operator=(const Job& base)
     {
 	ID = base.ID;
 	taskList = base.taskList;
-	scheduledTasks = base.scheduledTasks;
 	positionCounter = base.positionCounter;
     }
     return *this;
@@ -84,19 +83,19 @@ unsigned long Job::getDeadline() const
     unsigned long moment = 0;
     if (positionCounter > 0)
     {
-	moment += taskList.at(positionCounter - 1).getDuration();
-	moment += taskList.at(positionCounter - 1).getScheduleTime();
+	moment += taskList.at(positionCounter - 1)->getDuration();
+	moment += taskList.at(positionCounter - 1)->getScheduleTime();
     }
     for (unsigned long i = positionCounter; i < taskList.size(); ++i)
     {
-	unsigned long machineN = taskList.at(i).getMachineN();
+	unsigned long machineN = taskList.at(i)->getMachineN();
 	if (shop->getMachineAt(machineN)->isFree(moment))
 	{
-	    if (taskList.at(i).getScheduleTime() > 0)
+	    if (taskList.at(i)->getScheduleTime() > 0)
 	    {
-		moment = taskList.at(i).getScheduleTime();
+		moment = taskList.at(i)->getScheduleTime();
 	    }
-	    moment += taskList.at(i).getDuration();
+	    moment += taskList.at(i)->getDuration();
 	}
 	else
 	{
@@ -104,7 +103,7 @@ unsigned long Job::getDeadline() const
 	    {
 		moment = shop->getMachineAt(machineN)->getFreeMoment();
 	    }
-	    moment += taskList.at(i).getDuration();
+	    moment += taskList.at(i)->getDuration();
 	}
     }
     return moment;
@@ -112,14 +111,14 @@ unsigned long Job::getDeadline() const
 
 bool Job::hasUnscheduledTasks() const
 {
-    return (taskList.back().getScheduleTime() == 0);
+    return (taskList.back()->getScheduleTime() == 0);
 }
 
 unsigned long Job::getNextTaskMachineN() const
 {
     if (hasUnscheduledTasks())
     {
-	return taskList.at(positionCounter).getMachineN();
+	return taskList.at(positionCounter)->getMachineN();
     }
     return 0;
 }
@@ -131,19 +130,19 @@ void Job::schedule()
 	if (hasUnscheduledTasks())
 	{
 	    std::cout << "----------------------" << std::endl;
-	    Task& t = taskList.at(positionCounter);
+	    TaskPtr t = taskList.at(positionCounter);
 	    unsigned long moment = 0;
 	    if (positionCounter > 0)
 	    {
-		moment = (taskList.at(positionCounter - 1).getDuration()
-			+ taskList.at(positionCounter - 1).getScheduleTime());
+		moment = (taskList.at(positionCounter - 1)->getDuration()
+			+ taskList.at(positionCounter - 1)->getScheduleTime());
 	    }
-	    t.setScheduleTime(moment);
-	    shop->getMachineAt(t.getMachineN())->addTask(t);
+	    t->setScheduleTime(moment);
+	    shop->getMachineAt(t->getMachineN())->addTask(t);
 
-	    std::cout << "Scheduled task: " << ID << "." << t.getId() << " at time: "
-		    << t.getScheduleTime() << " duration:" << t.getDuration() << " machineN:"
-		    << t.getMachineN() << " Deadline of " << getDeadline() << std::endl;
+	    std::cout << "Scheduled task: " << ID << "." << t->getId() << " at time: "
+		    << t->getScheduleTime() << " duration:" << t->getDuration() << " machineN:"
+		    << t->getMachineN() << " Deadline of " << getDeadline() << std::endl;
 	    positionCounter++;
 	}
     }
