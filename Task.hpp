@@ -10,6 +10,7 @@
 #include <memory>
 #include "Machine.hpp"
 typedef std::shared_ptr<Task> TaskPtr;
+typedef std::vector<TaskPtr> TaskPtr_vector;
 
 class Task
 {
@@ -28,7 +29,6 @@ class Task
 	unsigned long getMachineN() const;
 	unsigned long getScheduleTime() const;
 	void setScheduleTime(unsigned long setTime);
-	void schedule();
 
     private:
 	unsigned long id;

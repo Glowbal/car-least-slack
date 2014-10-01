@@ -11,7 +11,6 @@
 
 Task::~Task()
 {
-    // TODO Auto-generated destructor stub
 }
 
 Task::Task(unsigned long theId, unsigned long machineNumber, unsigned short timeTask) :
@@ -69,9 +68,4 @@ unsigned long Task::getScheduleTime() const
 void Task::setScheduleTime(unsigned long setTime)
 {
     scheduleTime = setTime;
-}
-
-void Task::schedule()
-{
-    // machineN.addTask(this);
 }

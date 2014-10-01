@@ -16,20 +16,43 @@ class Machine
 {
     public:
 	Machine(unsigned long id = 0);
+	Machine(const Machine& base);
 	virtual ~Machine();
 
 	Machine& operator=(const Machine& base);
 	bool operator==(const Machine& base) const;
 	bool operator<(const Machine& base) const;
 
+	/**
+	 * Returns the machine ID.
+	 */
 	unsigned long getID() const;
+
+	/**
+	 * Add a task to the scheduled list.
+	 * Sets the task scheduled time to first free moment
+	 * if scheduled time is lower as the machines first free moment.
+	 *
+	 * @Param t The new task that will be added to the scheduled list.
+	 */
 	void addTask(TaskPtr t);
+
+	/**
+	 * Checks if the machine is free at given moment.
+	 * @Param time Moment in time to check if machine is free.
+	 *
+	 * @Return True if machine is free at moment.
+	 */
 	bool isFree(unsigned long time) const;
+
+	/**
+	 * Get the first moment the machine has no tasks scheduled anymore.
+	 * @Return Moment after the last scheduled task is finished.
+	 */
 	unsigned long getFreeMoment() const;
+
     private:
 	unsigned long ID;
-	unsigned long time;
-
 	std::vector<TaskPtr> scheduledTasks;
 };
 

@@ -5,14 +5,24 @@
  *      Author: Thomas Kooi, Michiel Buevink
  */
 #include "JobShop.hpp"
-#include <string>
 #include <iostream>
 
 int main(int argc, char **argv)
 {
-    JobShop shop("test.txt");
-    shop.schedule();
-    shop.printSchedule();
+    try
+    {
+	JobShop shop("test.txt");
+	shop.schedule();
+	shop.printSchedule();
+    }
+    catch (std::exception& e)
+    {
+	std::cout << "Error: " << e.what() << std::endl;
+    }
+    catch (...)
+    {
+	std::cout << "Caught an unknown exception" << std::endl;
+    }
     return 0;
 }
 

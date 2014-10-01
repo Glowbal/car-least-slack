@@ -11,11 +11,6 @@
 #include <boost/regex.hpp>
 #include "JobShop.hpp"
 
-Job::Job() :
-	ID(0), shop(nullptr), positionCounter(0)
-{
-}
-
 Job::~Job()
 {
 }
@@ -23,6 +18,11 @@ Job::~Job()
 void Job::addTask(unsigned long machineNumber, unsigned long time)
 {
     taskList.push_back(TaskPtr(new Task(taskList.size(), machineNumber, time)));
+}
+Job::Job(const Job& j) :
+	ID(j.ID), shop(j.shop), positionCounter(j.positionCounter), taskList(j.taskList)
+{
+
 }
 
 Job::Job(unsigned long id, const std::string& jobLine, JobShop* baseShop) :
@@ -57,6 +57,7 @@ Job& Job::operator=(const Job& base)
     if (this != &base)
     {
 	ID = base.ID;
+	shop = base.shop;
 	taskList = base.taskList;
 	positionCounter = base.positionCounter;
     }

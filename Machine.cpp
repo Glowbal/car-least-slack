@@ -10,7 +10,12 @@
 #include <iostream>
 
 Machine::Machine(unsigned long id) :
-	ID(id), time(0)
+	ID(id)
+{
+}
+
+Machine::Machine(const Machine& base) :
+	ID(base.ID), scheduledTasks(base.scheduledTasks)
 {
 }
 
@@ -27,6 +32,7 @@ Machine& Machine::operator=(const Machine& base)
     if (this != &base)
     {
 	ID = base.ID;
+	scheduledTasks = base.scheduledTasks;
     }
     return *this;
 }
@@ -59,7 +65,8 @@ bool Machine::isFree(unsigned long time) const
     {
 	return true;
     }
-    return ((scheduledTasks.back()->getScheduleTime() + scheduledTasks.back()->getDuration()) <= time);
+    return ((scheduledTasks.back()->getScheduleTime() + scheduledTasks.back()->getDuration())
+	    <= time);
 }
 
 unsigned long Machine::getFreeMoment() const

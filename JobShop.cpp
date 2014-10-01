@@ -26,70 +26,65 @@ JobShop::~JobShop()
 JobShop::JobShop(const std::string& jobFileName) :
 	numberOfJobs(0), numberOfMachines(0), currentTime(0)
 {
-    std::ifstream file(jobFileName);
-    std::string line;
-    if (file.is_open())
+    try
     {
-	// Getting the first line for amount of jobs and machines
-	if (std::getline(file, line))
+	std::ifstream file(jobFileName);
+	std::string line;
+	if (file.is_open())
 	{
-	    std::istringstream iss(line);
-	    iss >> numberOfJobs >> numberOfMachines;
-	    for (unsigned long i = 0; i < numberOfMachines; i++)
+	    // Getting the first line for amount of jobs and machines
+	    if (std::getline(file, line))
 	    {
-		machines.push_back(Machine(i));
+		std::istringstream iss(line);
+		iss >> numberOfJobs >> numberOfMachines;
+		for (unsigned long machineID = 0; machineID < numberOfMachines; ++machineID)
+		{
+		    machines.push_back(Machine(machineID));
+		}
 	    }
-	}
-	unsigned long id = 0;
-	while (std::getline(file, line))
-	{
-	    try
+	    unsigned long id = 0;
+	    while (std::getline(file, line))
 	    {
 		Job newJob(id, line, this);
 		jobs.push_back(newJob);
 		++id;
 	    }
-	    catch (std::exception& e)
-	    {
-		std::cout << e.what() << line << std::endl;
-	    }
+	    file.close();
 	}
-	file.close();
+    }
+    catch (std::exception& e)
+    {
+	std::cout << e.what() << std::endl;
+	throw e;
     }
 }
 
-Job* JobShop::getLeastSlackJob()
+Jobs::iterator JobShop::getLeastSlackJob()
 {
     unsigned long latestdeadline = 0;
-    Job* latestJob = nullptr;
-    for (Job& j : jobs)
+    Jobs::iterator highest;
+    for (Jobs::iterator it = jobs.begin(); it != jobs.end(); ++it)
     {
-	if (j.hasUnscheduledTasks())
+	Job& compareJob = (*it);
+	if (compareJob.hasUnscheduledTasks())
 	{
-	    unsigned long d = j.getDeadline();
-	    if (latestdeadline < d)
+	    unsigned long deadline = compareJob.getDeadline();
+	    if (latestdeadline < deadline)
 	    {
-		latestdeadline = d;
-		latestJob = &j;
+		latestdeadline = deadline;
+		highest = it;
 	    }
 	}
     }
-    return latestJob;
+    return highest;
 }
 
 void JobShop::schedule()
 {
     while (hasUnscheduledTasks())
     {
-	Job* latestJob = getLeastSlackJob();
-	if (latestJob != nullptr)
-	{
-	    latestJob->schedule();
-	}
-	else
-	{
-	    std::cout << "latestJob == nullptr \n";
-	}
+	Jobs::iterator leastSlackJob = getLeastSlackJob();
+	(*leastSlackJob).schedule();
     }
 
 }
@@ -110,7 +105,7 @@ Machine* JobShop::getMachineAt(unsigned long n)
 {
     if (n > machines.size())
     {
-	return &machines.at(0);
+	throw std::out_of_range("Trying to retrieve a machine but machine ID is to high");
     }
     return &machines.at(n);
 }
@@ -122,10 +117,9 @@ void JobShop::printSchedule()
     unsigned long c = 0;
     for (const Job& j : jobs)
     {
-	std::cout << c << " " << j.taskList.at(0)->getScheduleTime() << " "
-		<< j.taskList.back()->getScheduleTime()
-			+ j.taskList.back()->getDuration() << std::endl;
-	c++;
+	std::cout << c << " " << j.taskList.front()->getScheduleTime() << " "
+		<< j.taskList.back()->getScheduleTime() + j.taskList.back()->getDuration()
+		<< std::endl;
+	++c;
     }
 }
-
