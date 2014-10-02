@@ -20,7 +20,7 @@ void Job::addTask(unsigned long machineNumber, unsigned long time)
     taskList.push_back(TaskPtr(new Task(taskList.size(), machineNumber, time)));
 }
 Job::Job(const Job& j) :
-	ID(j.ID), shop(j.shop), positionCounter(j.positionCounter), taskList(j.taskList)
+	taskList(j.taskList), ID(j.ID), shop(j.shop), positionCounter(j.positionCounter)
 {
 
 }
@@ -47,7 +47,7 @@ Job::Job(unsigned long id, const std::string& jobLine, JobShop* baseShop) :
     }
     catch (std::exception& e)
     {
-	std::cout << e.what() << std::endl;
+	std::cout << "Error while creating a Job: " << e.what() << std::endl;
 	throw e;
     }
 }
@@ -66,7 +66,7 @@ Job& Job::operator=(const Job& base)
 
 bool Job::operator==(const Job& base) const
 {
-    return ID == base.ID;
+    return taskList == base.taskList;
 }
 
 bool Job::operator<(const Job& base) const
@@ -132,6 +132,7 @@ void Job::schedule()
 	{
 	    std::cout << "----------------------" << std::endl;
 	    TaskPtr t = taskList.at(positionCounter);
+
 	    unsigned long moment = 0;
 	    if (positionCounter > 0)
 	    {

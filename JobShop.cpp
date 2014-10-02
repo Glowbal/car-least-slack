@@ -42,12 +42,10 @@ JobShop::JobShop(const std::string& jobFileName) :
 		    machines.push_back(Machine(machineID));
 		}
 	    }
-	    unsigned long id = 0;
 	    while (std::getline(file, line))
 	    {
-		Job newJob(id, line, this);
+		Job newJob(jobs.size(), line, this);
 		jobs.push_back(newJob);
-		++id;
 	    }
 	    file.close();
 	}

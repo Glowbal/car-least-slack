@@ -4,6 +4,7 @@
  *  Created on: 16 sep. 2014
  *      Author: Thomas Kooi, Michiel Buevink
  */
+
 #include "JobShop.hpp"
 #include <iostream>
 
@@ -11,7 +12,7 @@ int main(int argc, char **argv)
 {
     try
     {
-	JobShop shop("test.txt");
+	JobShop shop("test_input2.txt");
 	shop.schedule();
 	shop.printSchedule();
     }

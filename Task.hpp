@@ -17,7 +17,7 @@ class Task
     public:
 
 	virtual ~Task();
-	Task(unsigned long theId, unsigned long machineNumber, unsigned short timeTask=0);
+	Task(unsigned long theId, unsigned long machineNumber, unsigned short timeTask = 0);
 	Task(const Task& t);
 
 	Task& operator=(const Task& base);
