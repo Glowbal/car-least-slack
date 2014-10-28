@@ -39,6 +39,11 @@ class JobShop
 	 */
 	Machine* getMachineAt(unsigned long n);
 
+	/**
+	 *
+	 */
+	void printScheduleMachine(unsigned long machineId) const;
+
     private:
 	Jobs jobs;
 	std::vector<Machine> machines;

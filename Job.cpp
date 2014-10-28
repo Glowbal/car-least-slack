@@ -32,11 +32,14 @@ Job::Job(unsigned long id, const std::string& jobLine, JobShop* baseShop) :
     {
 	unsigned short machineNumber = 0;
 	unsigned short time = 0;
+
+	// Use regex to get the different jobs from a string.
 	boost::regex regex("(\\d+\\s+\\d+)+", boost::regex_constants::icase);
 	boost::smatch base_match;
 	boost::sregex_token_iterator beginIterator(jobLine.begin(), jobLine.end(), regex, 0);
 	boost::sregex_token_iterator endIterator;
 
+	// create the tasks from regex results.
 	for (; beginIterator != endIterator; ++beginIterator)
 	{
 	    std::istringstream inputSStream(*beginIterator);
@@ -82,30 +85,41 @@ unsigned long Job::getId() const
 unsigned long Job::getDeadline() const
 {
     unsigned long moment = 0;
-    if (positionCounter > 0)
-    {
-	moment += taskList.at(positionCounter - 1)->getDuration();
-	moment += taskList.at(positionCounter - 1)->getScheduleTime();
-    }
+     if (positionCounter > 0)
+     {
+ 	moment += taskList.at(positionCounter - 1)->getDuration();
+ 	moment += taskList.at(positionCounter - 1)->getScheduleTime();
+     }
+     for (unsigned long i = positionCounter; i < taskList.size(); ++i)
+     {
+ 	unsigned long machineN = taskList.at(i)->getMachineN();
+ 	if (shop->getMachineAt(machineN)->isFree(moment))
+ 	{
+ 	    if (taskList.at(i)->getScheduleTime() > 0)
+ 	    {
+ 		moment = taskList.at(i)->getScheduleTime();
+ 	    }
+ 	    moment += taskList.at(i)->getDuration();
+ 	}
+ 	else
+ 	{
+ 	    if (shop->getMachineAt(machineN)->getFreeMoment() > moment)
+ 	    {
+ 		moment = shop->getMachineAt(machineN)->getFreeMoment();
+ 	    }
+ 	    moment += taskList.at(i)->getDuration();
+ 	}
+     }
+     return moment;
+}
+
+unsigned long Job::getDeadline2() const
+{
+    unsigned long moment = 0;
+
     for (unsigned long i = positionCounter; i < taskList.size(); ++i)
     {
-	unsigned long machineN = taskList.at(i)->getMachineN();
-	if (shop->getMachineAt(machineN)->isFree(moment))
-	{
-	    if (taskList.at(i)->getScheduleTime() > 0)
-	    {
-		moment = taskList.at(i)->getScheduleTime();
-	    }
-	    moment += taskList.at(i)->getDuration();
-	}
-	else
-	{
-	    if (shop->getMachineAt(machineN)->getFreeMoment() > moment)
-	    {
-		moment = shop->getMachineAt(machineN)->getFreeMoment();
-	    }
-	    moment += taskList.at(i)->getDuration();
-	}
+	moment += taskList.at(i)->getDuration();
     }
     return moment;
 }
@@ -132,7 +146,7 @@ void Job::schedule()
 	{
 	    std::cout << "----------------------" << std::endl;
 	    TaskPtr t = taskList.at(positionCounter);
-
+	    unsigned long deadline =  getDeadline();
 	    unsigned long moment = 0;
 	    if (positionCounter > 0)
 	    {
@@ -144,7 +158,7 @@ void Job::schedule()
 
 	    std::cout << "Scheduled task: " << ID << "." << t->getId() << " at time: "
 		    << t->getScheduleTime() << " duration:" << t->getDuration() << " machineN:"
-		    << t->getMachineN() << " Deadline of " << getDeadline() << std::endl;
+		    << t->getMachineN() << " Deadline of " << deadline << std::endl;
 	    positionCounter++;
 	}
     }

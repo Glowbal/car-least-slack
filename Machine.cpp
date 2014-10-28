@@ -51,12 +51,32 @@ void Machine::addTask(TaskPtr t)
 {
     if (!scheduledTasks.empty())
     {
-	if (!isFree(t->getScheduleTime()))
+	if (!canFitTaskIn(t))
 	{
-	    t->setScheduleTime(getFreeMoment());
+	    unsigned long freeMoment = getFreeMoment();
+	    std::cout << "Machine was occupied, so we schedule this later: " << t->getScheduleTime()
+		    << " NEW: " << freeMoment << std::endl;
+	    if (freeMoment <= t->getScheduleTime())
+	    {
+		std::cout << "ERROR GOING BACKWARDS IN TIME" << std::endl;
+	    }
+	    t->setScheduleTime(freeMoment);
 	}
     }
     scheduledTasks.push_back(t);
+}
+
+bool Machine::canFitTaskIn(TaskPtr task) const
+{
+    for (unsigned int i = task->getScheduleTime();
+	    i < (task->getScheduleTime() + task->getDuration()); ++i)
+    {
+	if (!isFree(i))
+	{
+	    return false;
+	}
+    }
+    return true;
 }
 
 bool Machine::isFree(unsigned long time) const
@@ -76,4 +96,13 @@ unsigned long Machine::getFreeMoment() const
 	return scheduledTasks.back()->getScheduleTime() + scheduledTasks.back()->getDuration();
     }
     return 0;
+}
+
+void Machine::printSchedule() const {
+
+    std::cout << "Printing for machine: " << std::endl;
+    for (const TaskPtr t : scheduledTasks)
+    {
+	std::cout << "Task: " << t->getId() << " Time: "<< t->getScheduleTime() << std::endl;
+    }
 }

@@ -12,9 +12,24 @@ int main(int argc, char **argv)
 {
     try
     {
-	JobShop shop("test_input2.txt");
-	shop.schedule();
-	shop.printSchedule();
+
+	if (argc > 1)
+	{
+	    std::string fileName(argv[1]);
+	    JobShop shop(fileName);
+	    shop.schedule();
+	    shop.printSchedule();
+
+	    shop.printScheduleMachine(0);
+	}
+	else
+	{
+	    JobShop shop("input.txt");
+	    shop.schedule();
+	    shop.printSchedule();
+
+	    shop.printScheduleMachine(0);
+	}
     }
     catch (std::exception& e)
     {

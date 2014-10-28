@@ -51,6 +51,10 @@ class Machine
 	 */
 	unsigned long getFreeMoment() const;
 
+	bool canFitTaskIn(TaskPtr t) const;
+
+	void printSchedule() const;
+
     private:
 	unsigned long ID;
 	std::vector<TaskPtr> scheduledTasks;

@@ -38,6 +38,12 @@ class Job
 	unsigned long getDeadline() const;
 
 	/**
+	 * Get the deadline without taking the machine is free at moment into account.
+	 *@return deadline from latest scheduled task to completion.
+	 */
+	unsigned long getDeadline2() const;
+
+	/**
 	 * @Return true while last task is unscheduled.
 	 */
 	bool hasUnscheduledTasks() const;

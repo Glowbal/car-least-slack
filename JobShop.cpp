@@ -63,10 +63,11 @@ Jobs::iterator JobShop::getLeastSlackJob()
     Jobs::iterator highest;
     for (Jobs::iterator it = jobs.begin(); it != jobs.end(); ++it)
     {
-	Job& compareJob = (*it);
+	const Job& compareJob = (*it);
 	if (compareJob.hasUnscheduledTasks())
 	{
-	    unsigned long deadline = compareJob.getDeadline();
+	    // compareJob.isFree(currentMoment);
+	    unsigned long deadline = compareJob.getDeadline2();
 	    if (latestdeadline < deadline)
 	    {
 		latestdeadline = deadline;
@@ -120,4 +121,11 @@ void JobShop::printSchedule()
 		<< std::endl;
 	++c;
     }
+}
+
+void JobShop::printScheduleMachine(unsigned long machineId) const
+{
+    std::cout << "---------------" << std::endl;
+
+    machines.at(machineId).printSchedule();
 }
