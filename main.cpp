@@ -19,16 +19,12 @@ int main(int argc, char **argv)
 	    JobShop shop(fileName);
 	    shop.schedule();
 	    shop.printSchedule();
-
-	    shop.printScheduleMachine(0);
 	}
 	else
 	{
 	    JobShop shop("input.txt");
 	    shop.schedule();
 	    shop.printSchedule();
-
-	    shop.printScheduleMachine(0);
 	}
     }
     catch (std::exception& e)

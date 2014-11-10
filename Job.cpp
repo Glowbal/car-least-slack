@@ -46,7 +46,6 @@ Job::Job(unsigned long id, const std::string& jobLine, JobShop* baseShop) :
 	    inputSStream >> machineNumber >> time;
 	    addTask(machineNumber, time);
 	}
-	std::cout << std::endl;
     }
     catch (std::exception& e)
     {
@@ -144,7 +143,6 @@ void Job::schedule()
     {
 	if (hasUnscheduledTasks())
 	{
-	    std::cout << "----------------------" << std::endl;
 	    TaskPtr t = taskList.at(positionCounter);
 	    unsigned long deadline =  getDeadline();
 	    unsigned long moment = 0;
@@ -155,10 +153,6 @@ void Job::schedule()
 	    }
 	    t->setScheduleTime(moment);
 	    shop->getMachineAt(t->getMachineN())->addTask(t);
-
-	    std::cout << "Scheduled task: " << ID << "." << t->getId() << " at time: "
-		    << t->getScheduleTime() << " duration:" << t->getDuration() << " machineN:"
-		    << t->getMachineN() << " Deadline of " << deadline << std::endl;
 	    positionCounter++;
 	}
     }

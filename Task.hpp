@@ -24,9 +24,24 @@ class Task
 	bool operator==(const Task& base) const;
 	bool operator<(const Task& base) const;
 
+	/**
+	 * @return duration of task
+	 */
 	unsigned short getDuration() const;
+
+	/**
+	 * @return ID of task
+	 */
 	unsigned long getId() const;
+
+	/**
+	 * @return machine number/ID
+	 */
 	unsigned long getMachineN() const;
+
+	/**
+	 * @return
+	 */
 	unsigned long getScheduleTime() const;
 	void setScheduleTime(unsigned long setTime);
 

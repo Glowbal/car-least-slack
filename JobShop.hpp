@@ -31,9 +31,9 @@ class JobShop
 
 	/**
 	 * Returns machine with given ID.
-	 * @Param n The ID from machine.
+	 * @param n The ID from machine.
 	 *
-	 * @Return Pointer to machine with ID.
+	 * @return Pointer to machine with ID.
 	 *
 	 * @Throws std::out_of_range if machine does not exist.
 	 */

@@ -33,13 +33,13 @@ class Machine
 	 * Sets the task scheduled time to first free moment
 	 * if scheduled time is lower as the machines first free moment.
 	 *
-	 * @Param t The new task that will be added to the scheduled list.
+	 * @param t The new task that will be added to the scheduled list.
 	 */
 	void addTask(TaskPtr t);
 
 	/**
 	 * Checks if the machine is free at given moment.
-	 * @Param time Moment in time to check if machine is free.
+	 * @param time Moment in time to check if machine is free.
 	 *
 	 * @Return True if machine is free at moment.
 	 */
@@ -51,8 +51,15 @@ class Machine
 	 */
 	unsigned long getFreeMoment() const;
 
+	/**
+	 * Checks if the task can be fit in with its current scheduled starting time.
+	 * @return true if task can be scheduled at its current scheduled time.
+	 */
 	bool canFitTaskIn(TaskPtr t) const;
 
+	/**
+	 *
+	 */
 	void printSchedule() const;
 
     private:

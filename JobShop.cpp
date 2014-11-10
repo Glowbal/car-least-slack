@@ -111,8 +111,6 @@ Machine* JobShop::getMachineAt(unsigned long n)
 
 void JobShop::printSchedule()
 {
-    std::cout << "---------------" << std::endl;
-
     unsigned long c = 0;
     for (const Job& j : jobs)
     {
@@ -125,7 +123,5 @@ void JobShop::printSchedule()
 
 void JobShop::printScheduleMachine(unsigned long machineId) const
 {
-    std::cout << "---------------" << std::endl;
-
     machines.at(machineId).printSchedule();
 }
