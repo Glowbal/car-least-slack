@@ -14,11 +14,12 @@ Task::~Task()
 }
 
 Task::Task(unsigned long theId, unsigned long machineNumber, unsigned short timeTask) :
-	id(theId), machineN(machineNumber), duration(timeTask), scheduleTime(0)
+    id(theId), machineN(machineNumber), duration(timeTask), scheduleTime(0)
 {
 }
+
 Task::Task(const Task& t) :
-	id(t.id), machineN(t.machineN), duration(t.duration), scheduleTime(t.scheduleTime)
+    id(t.id), machineN(t.machineN), duration(t.duration), scheduleTime(t.scheduleTime)
 {
 }
 
@@ -26,10 +27,10 @@ Task& Task::operator=(const Task& base)
 {
     if (this != &base)
     {
-	id = base.id;
-	machineN = base.machineN;
-	duration = base.duration;
-	scheduleTime = base.scheduleTime;
+		    id = base.id;
+		    machineN = base.machineN;
+		    duration = base.duration;
+		    scheduleTime = base.scheduleTime;
     }
     return *this;
 }
